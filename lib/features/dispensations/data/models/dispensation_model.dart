@@ -12,9 +12,8 @@ class DispensationLineModel extends DispensationLineEntity {
   factory DispensationLineModel.fromJson(Map<String, dynamic> j) {
     return DispensationLineModel(
       id: (j['id'] ?? j['_id'] ?? '').toString(),
-      drugName:
-          (j['drugName'] ?? j['itemName'] ?? j['name'] ?? 'Medication')
-              .toString(),
+      drugName: (j['drugName'] ?? j['itemName'] ?? j['name'] ?? 'Medication')
+          .toString(),
       quantityDispensed:
           (j['quantityDispensed'] as num?) ?? (j['quantity'] as num?) ?? 0,
       unitSellingPrice: (j['unitSellingPrice'] as num?) ?? 0,
@@ -61,10 +60,9 @@ class DispensationModel extends DispensationEntity {
     }
 
     // Total quantity dispensed across all line items
-    final totalQty =
-        lines.isEmpty
-            ? (j['quantity'] as num?) ?? 0
-            : lines.fold<num>(0, (sum, l) => sum + l.quantityDispensed);
+    final totalQty = lines.isEmpty
+        ? (j['quantity'] as num?) ?? 0
+        : lines.fold<num>(0, (sum, l) => sum + l.quantityDispensed);
 
     return DispensationModel(
       id: (j['id'] ?? j['_id'] ?? '').toString(),

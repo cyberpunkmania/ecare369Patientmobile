@@ -111,116 +111,122 @@ class _DispensationCard extends StatelessWidget {
         onTap: () => _showDetail(context),
         borderRadius: BorderRadius.circular(18),
         child: Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.mintDeep.withValues(alpha: 0.6)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: const Icon(
-              Icons.medication_outlined,
-              color: AppColors.primary,
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: AppColors.mintDeep.withValues(alpha: 0.6),
             ),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.medicationName,
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                  ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(14),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Qty: ${item.quantity}${item.unit != null ? ' ${item.unit}' : ''}',
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 12.5,
-                  ),
+                child: const Icon(
+                  Icons.medication_outlined,
+                  color: AppColors.primary,
                 ),
-                if (item.instructions != null && item.instructions.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(
-                      item.instructions,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.medicationName,
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Qty: ${item.quantity}${item.unit != null ? ' ${item.unit}' : ''}',
                       style: const TextStyle(
                         color: AppColors.textSecondary,
-                        fontSize: 12,
+                        fontSize: 12.5,
                       ),
                     ),
-                  ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.schedule,
-                      size: 13,
-                      color: AppColors.textHint,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      dateText,
-                      style: const TextStyle(
-                        color: AppColors.textHint,
-                        fontSize: 11.5,
-                      ),
-                    ),
-                    if (item.pharmacistName != null) ...[
-                      const SizedBox(width: 10),
-                      const Icon(
-                        Icons.person_outline,
-                        size: 13,
-                        color: AppColors.textHint,
-                      ),
-                      const SizedBox(width: 4),
-                      Flexible(
+                    if (item.instructions != null &&
+                        item.instructions.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
                         child: Text(
-                          item.pharmacistName,
-                          overflow: TextOverflow.ellipsis,
+                          item.instructions,
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.schedule,
+                          size: 13,
+                          color: AppColors.textHint,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          dateText,
                           style: const TextStyle(
                             color: AppColors.textHint,
                             fontSize: 11.5,
                           ),
                         ),
-                      ),
-                    ],
+                        if (item.pharmacistName != null) ...[
+                          const SizedBox(width: 10),
+                          const Icon(
+                            Icons.person_outline,
+                            size: 13,
+                            color: AppColors.textHint,
+                          ),
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              item.pharmacistName,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: AppColors.textHint,
+                                fontSize: 11.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.mint,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              item.status,
-              style: const TextStyle(
-                color: AppColors.primary,
-                fontWeight: FontWeight.w600,
-                fontSize: 11.5,
               ),
-            ),
+              Container(
+                margin: const EdgeInsets.only(left: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.mint,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  item.status,
+                  style: const TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11.5,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
         ),
       ),
     );
