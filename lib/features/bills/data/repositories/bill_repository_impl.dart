@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -53,6 +55,19 @@ class BillRepositoryImpl implements BillRepository {
     try {
       final b = await remoteDataSource.getBillById(id);
       return Right(b);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Uint8List>> downloadBillPdf(String billId) async {
+    if (!await networkInfo.isConnected) {
+      return const Left(NetworkFailure());
+    }
+    try {
+      final bytes = await remoteDataSource.downloadBillPdf(billId);
+      return Right(bytes);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
     }

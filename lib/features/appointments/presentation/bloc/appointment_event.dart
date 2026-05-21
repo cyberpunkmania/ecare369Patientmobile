@@ -30,7 +30,10 @@ class AppointmentBooked extends AppointmentEvent {
 class AppointmentCancelled extends AppointmentEvent {
   final String id;
   final String reason;
-  const AppointmentCancelled({required this.id, this.reason = 'Patient requested cancellation'});
+  const AppointmentCancelled({
+    required this.id,
+    this.reason = 'Patient requested cancellation',
+  });
   @override
   List<Object?> get props => [id, reason];
 }

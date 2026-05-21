@@ -103,7 +103,10 @@ class AppointmentRepositoryImpl implements AppointmentRepository {
   }
 
   @override
-  Future<Either<Failure, void>> cancelAppointment(String id, {String reason = ''}) async {
+  Future<Either<Failure, void>> cancelAppointment(
+    String id, {
+    String reason = '',
+  }) async {
     if (!await _networkInfo.isConnected) {
       return const Left(NetworkFailure());
     }

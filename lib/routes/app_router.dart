@@ -23,6 +23,8 @@ import '../features/medical_records/presentation/pages/medical_record_list_page.
 import '../features/bills/presentation/pages/bill_detail_page.dart';
 import '../features/bills/presentation/pages/bills_list_page.dart';
 import '../features/dispensations/presentation/pages/dispensations_page.dart';
+import '../features/orders/presentation/pages/order_detail_page.dart';
+import '../features/orders/presentation/pages/orders_list_page.dart';
 import '../features/notifications/presentation/pages/notification_list_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/queue/presentation/pages/queue_live_page.dart';
@@ -49,6 +51,9 @@ class Routes {
   static const String dispensations = '/dispensations';
   static const String bills = '/bills';
   static const String billDetail = '/bills/detail';
+
+  static const String ordersList = '/orders';
+  static const String orderDetail = '/orders/detail';
 }
 
 /// Central route generator. Pass as [onGenerateRoute] to [MaterialApp].
@@ -142,6 +147,14 @@ class AppRouter {
       case Routes.billDetail:
         final billId = settings.arguments as String;
         return _page(BillDetailPage(billId: billId));
+
+      case Routes.ordersList:
+        final appointmentId = settings.arguments as String;
+        return _page(OrdersListPage(appointmentId: appointmentId));
+
+      case Routes.orderDetail:
+        final orderId = settings.arguments as String;
+        return _page(OrderDetailPage(orderId: orderId));
 
       default:
         return _page(const AuthPage());

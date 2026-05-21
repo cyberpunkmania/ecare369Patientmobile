@@ -64,10 +64,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     required Map<String, dynamic> body,
   }) async {
     try {
-      await _dio.put(
-        ApiEndpoints.patientDemographics(patientId),
-        data: body,
-      );
+      await _dio.put(ApiEndpoints.patientDemographics(patientId), data: body);
       return getProfile(patientId);
     } on DioException catch (e) {
       throw _toException(e);

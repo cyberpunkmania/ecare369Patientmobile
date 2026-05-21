@@ -59,7 +59,9 @@ class PatientProfileModel extends PatientProfileEntity {
         : <InsurancePolicyModel>[];
 
     // Address: prefer separate fields; fall back to the combined address string.
-    final rawAddress = json['address'] is String ? json['address'] as String : null;
+    final rawAddress = json['address'] is String
+        ? json['address'] as String
+        : null;
     final addressLine1 =
         json['addressLine1']?.toString() ??
         (json['address'] is Map<String, dynamic>

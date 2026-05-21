@@ -18,7 +18,8 @@ class InsuranceAddSheet extends StatefulWidget {
     DateTime? validFrom,
     DateTime? validTo,
     bool isPrimary,
-  })? onAdd;
+  })?
+  onAdd;
 
   /// Called when saving an EXISTING insurance. Required when [initialInsurance]
   /// is not null.
@@ -30,7 +31,8 @@ class InsuranceAddSheet extends StatefulWidget {
     DateTime? validFrom,
     DateTime? validTo,
     bool isPrimary,
-  })? onUpdate;
+  })?
+  onUpdate;
 
   /// When non-null, the sheet opens in edit mode with fields pre-populated.
   final InsurancePolicyEntity? initialInsurance;

@@ -87,6 +87,11 @@ import '../../features/bills/data/repositories/bill_repository_impl.dart';
 import '../../features/bills/domain/repositories/bill_repository.dart';
 import '../../features/bills/presentation/bloc/bills_cubit.dart';
 
+import '../../features/orders/data/datasources/orders_remote_datasource.dart';
+import '../../features/orders/data/repositories/orders_repository_impl.dart';
+import '../../features/orders/domain/repositories/orders_repository.dart';
+import '../../features/orders/presentation/bloc/orders_cubit.dart';
+
 import '../realtime/signalr_service.dart';
 
 import '../../routes/guards/auth_guard.dart';
@@ -459,5 +464,19 @@ Future<void> initDependencies() async {
   // ─── SignalR (singleton) ──────────────────────────────────────
   sl.registerLazySingleton<SignalRService>(
     () => SignalRService(secureStorage: sl<SecureStorage>()),
+  );
+
+  // ─── Orders / Service Requests ──────────────────────────────
+  sl.registerLazySingleton<OrdersRemoteDataSource>(
+    () => OrdersRemoteDataSourceImpl(dio: sl<Dio>()),
+  );
+  sl.registerLazySingleton<OrdersRepository>(
+    () => OrdersRepositoryImpl(
+      remoteDataSource: sl<OrdersRemoteDataSource>(),
+      networkInfo: sl<NetworkInfo>(),
+    ),
+  );
+  sl.registerFactory<OrdersCubit>(
+    () => OrdersCubit(repository: sl<OrdersRepository>()),
   );
 }

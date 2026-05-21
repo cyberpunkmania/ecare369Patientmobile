@@ -14,7 +14,10 @@ abstract class AppointmentRepository {
     String? type,
     String? reason,
   });
-  Future<Either<Failure, void>> cancelAppointment(String id, {String reason = ''});
+  Future<Either<Failure, void>> cancelAppointment(
+    String id, {
+    String reason = '',
+  });
   Future<Either<Failure, AppointmentEntity>> rescheduleAppointment({
     required String id,
     required DateTime newDate,

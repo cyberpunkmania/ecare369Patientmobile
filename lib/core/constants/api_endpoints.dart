@@ -120,13 +120,23 @@ class ApiEndpoints {
   static String pharmacyDispensationsByPatient(String patientId) =>
       '/api/pharmacy/dispensations/patient/$patientId';
 
+  /// GET — patient portal: own dispensation history (uses JWT PatientId).
+  static const String pharmacyDispensationsMy =
+      '/api/pharmacy/dispensations/my';
+
   // ───────────────────────────── Bills ───────────────────────────────────────
-  /// GET — paged bills for a patient.
+  /// GET — paged bills for a patient (staff: requires BILL.READ).
   static String billsByPatient(String patientId) =>
       '/api/bills/patient/$patientId';
 
+  /// GET — patient portal: own bills (uses JWT PatientId, requires BILL.READ.SELF).
+  static const String billsMy = '/api/bills/my';
+
   /// GET — single bill detail (line items + payments).
   static String billById(String billId) => '/api/bills/$billId';
+
+  /// GET — patient portal: download own bill as PDF (requires BILL.READ.SELF).
+  static String billPdfMy(String billId) => '/api/bills/$billId/pdf/my';
 
   // ───────────────────────────── Insurance catalog ───────────────────────────
   static const String insuranceProviders = '/api/insurance/providers';
@@ -158,6 +168,16 @@ class ApiEndpoints {
       '/api/chat-messages/conversation/$userId';
   static String markChatMessageRead(String messageId) =>
       '/api/chat-messages/$messageId/mark-read';
+
+  // ───────────────────────────── Orders / Service Requests ──────────────────
+  /// GET — all service requests for a specific appointment.
+  /// Returns `ListResponse<ServiceRequestDto>`.
+  static String ordersByAppointment(String appointmentId) =>
+      '/api/orders/service-requests/appointment/$appointmentId';
+
+  /// GET — single service request detail (incl. results + attachments).
+  static String orderById(String orderId) =>
+      '/api/orders/service-requests/$orderId';
 
   // ───────────────────────────── Back-compat aliases ─────────────────────────
   // Kept temporarily so existing datasources compile while we migrate them

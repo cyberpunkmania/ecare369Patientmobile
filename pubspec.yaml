@@ -67,6 +67,9 @@ dependencies:
   # QR display for appointment number on the check-in screen
   qr_flutter: ^4.1.0
 
+  # Deep links & external URL launching (attachments, result files)
+  url_launcher: ^6.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

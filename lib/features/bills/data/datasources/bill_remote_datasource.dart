@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 
 import '../../../../core/constants/api_endpoints.dart';
@@ -11,6 +13,7 @@ abstract class BillRemoteDataSource {
     int pageSize = 50,
   });
   Future<BillModel> getBillById(String id);
+  Future<Uint8List> downloadBillPdf(String billId);
 }
 
 class BillRemoteDataSourceImpl implements BillRemoteDataSource {
@@ -34,7 +37,7 @@ class BillRemoteDataSourceImpl implements BillRemoteDataSource {
   }) async {
     try {
       final res = await _dio.get(
-        ApiEndpoints.billsByPatient(patientId),
+        ApiEndpoints.billsMy,
         queryParameters: {'page': page, 'pageSize': pageSize},
       );
       final body = res.data;
@@ -69,6 +72,19 @@ class BillRemoteDataSourceImpl implements BillRemoteDataSource {
     try {
       final res = await _dio.get(ApiEndpoints.billById(id));
       return BillModel.fromJson(_unwrapObject(res.data));
+    } on DioException catch (e) {
+      throw _toException(e);
+    }
+  }
+
+  @override
+  Future<Uint8List> downloadBillPdf(String billId) async {
+    try {
+      final res = await _dio.get<Uint8List>(
+        ApiEndpoints.billPdfMy(billId),
+        options: Options(responseType: ResponseType.bytes),
+      );
+      return res.data!;
     } on DioException catch (e) {
       throw _toException(e);
     }

@@ -24,7 +24,7 @@ class DispensationRemoteDataSourceImpl implements DispensationRemoteDataSource {
   }) async {
     try {
       final res = await _dio.get(
-        ApiEndpoints.pharmacyDispensationsByPatient(patientId),
+        ApiEndpoints.pharmacyDispensationsMy,
         queryParameters: {'page': page, 'pageSize': pageSize},
       );
       final body = res.data;

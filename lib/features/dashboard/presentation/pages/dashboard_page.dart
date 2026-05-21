@@ -190,8 +190,9 @@ class _HomeTab extends StatelessWidget {
                 _MonitoringGrid(
                   onMedicalRecords: () =>
                       Navigator.of(context).pushNamed(Routes.medicalRecords),
-                  onNotifications: () =>
-                      Navigator.of(context).pushNamed(Routes.notifications),
+                  onLabResults: () => Navigator.of(
+                    context,
+                  ).pushNamed(Routes.ordersList, arguments: ''),
                 ),
                 const SizedBox(height: 26),
                 _SectionHeader(title: 'Upcoming'),
@@ -663,10 +664,10 @@ class _HeroDoctorShell extends StatelessWidget {
 
 class _MonitoringGrid extends StatelessWidget {
   final VoidCallback onMedicalRecords;
-  final VoidCallback onNotifications;
+  final VoidCallback onLabResults;
   const _MonitoringGrid({
     required this.onMedicalRecords,
-    required this.onNotifications,
+    required this.onLabResults,
   });
 
   @override
@@ -691,7 +692,7 @@ class _MonitoringGrid extends StatelessWidget {
             child: _MonitoringTile(
               title: 'Lab\nresults',
               icon: Icons.science_outlined,
-              onTap: onNotifications,
+              onTap: onLabResults,
             ),
           ),
         ],
@@ -1102,6 +1103,21 @@ class _RecordsTab extends StatelessWidget {
                     icon: Icons.folder_shared_rounded,
                     onTap: () =>
                         Navigator.of(context).pushNamed(Routes.medicalRecords),
+                  ),
+                  const SizedBox(height: 10),
+                  _DoctorActionCard(
+                    title: 'My Bills',
+                    subtitle: 'Invoices and payment history',
+                    icon: Icons.receipt_long_rounded,
+                    onTap: () => Navigator.of(context).pushNamed(Routes.bills),
+                  ),
+                  const SizedBox(height: 10),
+                  _DoctorActionCard(
+                    title: 'My Prescriptions',
+                    subtitle: 'Dispensed medications and scripts',
+                    icon: Icons.medication_rounded,
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(Routes.dispensations),
                   ),
                   const SizedBox(height: 10),
                   _DoctorActionCard(

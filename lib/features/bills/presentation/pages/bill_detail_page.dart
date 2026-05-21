@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../../../../core/config/theme_config.dart';
@@ -357,120 +355,23 @@ class _Actions extends StatelessWidget {
 
   Future<void> _printReceipt(BuildContext context, BillEntity bill) async {
     try {
-      final pdf = pw.Document();
-      pdf.addPage(
-        pw.Page(
-          pageFormat: PdfPageFormat.a4,
-          build: (ctx) {
-            final fmt = DateFormat('d MMM yyyy');
-            pw.Widget row(String l, String r, {bool bold = false}) =>
-                pw.Padding(
-                  padding: const pw.EdgeInsets.symmetric(vertical: 2),
-                  child: pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.Text(
-                        l,
-                        style: pw.TextStyle(
-                          fontWeight: bold
-                              ? pw.FontWeight.bold
-                              : pw.FontWeight.normal,
-                        ),
-                      ),
-                      pw.Text(
-                        r,
-                        style: pw.TextStyle(
-                          fontWeight: bold
-                              ? pw.FontWeight.bold
-                              : pw.FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-            return pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Text(
-                  'Evans Care',
-                  style: pw.TextStyle(
-                    fontSize: 22,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
-                ),
-                pw.SizedBox(height: 4),
-                pw.Text('Payment receipt'),
-                pw.Divider(),
-                row('Bill #', bill.billNumber ?? bill.id.substring(0, 8)),
-                row('Issued', fmt.format(bill.issuedAt)),
-                if (bill.patientName != null) row('Patient', bill.patientName!),
-                pw.SizedBox(height: 12),
-                pw.Text(
-                  'Items',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                ),
-                pw.SizedBox(height: 4),
-                pw.Table.fromTextArray(
-                  headers: ['Description', 'Qty', 'Unit', 'Total'],
-                  data: bill.items
-                      .map(
-                        (it) => [
-                          it.description,
-                          it.quantity.toString(),
-                          it.unitPrice.toStringAsFixed(2),
-                          it.lineTotal.toStringAsFixed(2),
-                        ],
-                      )
-                      .toList(),
-                  cellAlignment: pw.Alignment.centerLeft,
-                  headerDecoration: const pw.BoxDecoration(
-                    color: PdfColors.grey300,
-                  ),
-                ),
-                pw.SizedBox(height: 14),
-                row(
-                  'Subtotal',
-                  '${bill.currency} ${bill.subtotal.toStringAsFixed(2)}',
-                ),
-                row('Tax', '${bill.currency} ${bill.tax.toStringAsFixed(2)}'),
-                if (bill.discount != 0)
-                  row(
-                    'Discount',
-                    '-${bill.currency} ${bill.discount.toStringAsFixed(2)}',
-                  ),
-                row(
-                  'Total',
-                  '${bill.currency} ${bill.total.toStringAsFixed(2)}',
-                  bold: true,
-                ),
-                row(
-                  'Paid',
-                  '${bill.currency} ${bill.amountPaid.toStringAsFixed(2)}',
-                ),
-                row(
-                  'Balance',
-                  '${bill.currency} ${bill.balanceDue.toStringAsFixed(2)}',
-                  bold: true,
-                ),
-                pw.SizedBox(height: 18),
-                pw.Text(
-                  'Thank you for choosing Evans Care.',
-                  style: pw.TextStyle(
-                    fontStyle: pw.FontStyle.italic,
-                    color: PdfColors.grey700,
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      );
-      await Printing.layoutPdf(onLayout: (_) async => pdf.save());
+      final cubit = context.read<BillsCubit>();
+      final pdfBytes = await cubit.downloadBillPdf(bill.id);
+      if (pdfBytes == null) {
+        if (!context.mounted) return;
+        TopNotification.show(
+          context,
+          'Could not download receipt.',
+          type: NotificationType.error,
+        );
+        return;
+      }
+      await Printing.layoutPdf(onLayout: (_) async => pdfBytes);
     } catch (e) {
       if (!context.mounted) return;
       TopNotification.show(
         context,
-        'Could not generate receipt: $e',
+        'Could not download receipt: $e',
         type: NotificationType.error,
       );
     }

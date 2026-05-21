@@ -33,7 +33,10 @@ class AppointmentDetailPage extends StatelessWidget {
     }
   }
 
-  Future<void> _confirmCancel(BuildContext context, String appointmentId) async {
+  Future<void> _confirmCancel(
+    BuildContext context,
+    String appointmentId,
+  ) async {
     final reasonController = TextEditingController();
     final confirmed = await showModalBottomSheet<bool>(
       context: context,
@@ -77,7 +80,11 @@ class AppointmentDetailPage extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
-                    child: const Icon(Icons.cancel_outlined, color: AppColors.error, size: 24),
+                    child: const Icon(
+                      Icons.cancel_outlined,
+                      color: AppColors.error,
+                      size: 24,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   const Expanded(
@@ -106,7 +113,10 @@ class AppointmentDetailPage extends StatelessWidget {
                   labelText: 'Reason (optional)',
                   hintText: 'e.g. Schedule conflict',
                   border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
                 ),
                 maxLines: 2,
               ),
@@ -175,7 +185,9 @@ class AppointmentDetailPage extends StatelessWidget {
         if (state is AppointmentCancelledSuccess) {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Appointment cancelled successfully.')),
+            const SnackBar(
+              content: Text('Appointment cancelled successfully.'),
+            ),
           );
         } else if (state is AppointmentError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -287,15 +299,17 @@ class AppointmentDetailPage extends StatelessWidget {
                                     child: OutlinedButton.icon(
                                       onPressed: isLoading
                                           ? null
-                                          : () => _confirmCancel(context, apt.id),
+                                          : () =>
+                                                _confirmCancel(context, apt.id),
                                       icon: const Icon(
                                         Icons.cancel,
                                         color: AppColors.error,
                                       ),
                                       label: const Text(
                                         'Cancel',
-                                        style:
-                                            TextStyle(color: AppColors.error),
+                                        style: TextStyle(
+                                          color: AppColors.error,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -304,8 +318,9 @@ class AppointmentDetailPage extends StatelessWidget {
                                     child: ElevatedButton.icon(
                                       onPressed: isLoading
                                           ? null
-                                          : () => Navigator.of(context)
-                                              .pushNamed(Routes.bookAppointment),
+                                          : () => Navigator.of(
+                                              context,
+                                            ).pushNamed(Routes.bookAppointment),
                                       icon: const Icon(Icons.schedule),
                                       label: const Text('Reschedule'),
                                     ),
@@ -313,6 +328,26 @@ class AppointmentDetailPage extends StatelessWidget {
                                 ],
                               ),
                             ],
+
+                            // ── Orders & Lab Results ────────────────────────
+                            const SizedBox(height: 12),
+                            OutlinedButton.icon(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.primary,
+                                side: const BorderSide(
+                                  color: AppColors.primary,
+                                ),
+                                minimumSize: const Size(double.infinity, 48),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
+                              icon: const Icon(Icons.biotech_outlined),
+                              label: const Text('Orders & Lab Results'),
+                              onPressed: () => Navigator.of(
+                                context,
+                              ).pushNamed(Routes.ordersList, arguments: apt.id),
+                            ),
                           ],
                         ),
                       ),

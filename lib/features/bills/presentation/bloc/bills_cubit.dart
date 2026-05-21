@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -71,5 +73,15 @@ class BillsCubit extends Cubit<BillsState> {
           emit(state.copyWith(loadingDetail: false, errorMessage: f.message)),
       (b) => emit(state.copyWith(loadingDetail: false, selected: b)),
     );
+  }
+
+  /// Downloads the bill PDF from the backend.
+  /// Returns the raw bytes on success, or emits an error state and returns null.
+  Future<Uint8List?> downloadBillPdf(String billId) async {
+    final res = await repository.downloadBillPdf(billId);
+    return res.fold((f) {
+      emit(state.copyWith(errorMessage: f.message));
+      return null;
+    }, (bytes) => bytes);
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
@@ -9,4 +11,5 @@ abstract class BillRepository {
     int pageSize = 50,
   });
   Future<Either<Failure, BillEntity>> getBillById(String id);
+  Future<Either<Failure, Uint8List>> downloadBillPdf(String billId);
 }

@@ -7,20 +7,13 @@
 class EnvConfig {
   EnvConfig._();
 
-  /// Optional build-time override:
-  /// `flutter run --dart-define=API_BASE_URL=https://staging.example.com`
-  static const String _override = String.fromEnvironment('API_BASE_URL');
-
-  /// Production backend URL (Render deployment).
+  static const String _localUrl = 'http://localhost:5216';
   static const String _productionUrl = 'https://ecarehmis.onrender.com';
 
-  /// Returns the production URL by default.
-  /// Pass `--dart-define=API_BASE_URL=http://10.0.2.2:5216` to point at a
-  /// local backend during development.
-  static String get baseUrl {
-    if (_override.isNotEmpty) return _override;
-    return _productionUrl;
-  }
+  /// Toggle: set to [true] to hit local backend, [false] for the deployed server.
+  static const bool _useLocal = true;
+
+  static String get baseUrl => _useLocal ? _localUrl : _productionUrl;
 
   /// SignalR notification hub absolute URL. Lives on the **Notifications**
   /// service (separate port in some deployments — falls back to the same host
